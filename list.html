@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="target-densitydpi=device-dpi, width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="description" content="Samnius">
+    <meta name="author" content="Fauzan Azmi">
+    <meta name="keywords" content="samnius, simpulan, berita, kliping">
+
+    <link href="css/modern.css" rel="stylesheet">
+    <link href="css/modern-responsive.css" rel="stylesheet">
+    <link href="css/site.css" rel="stylesheet" type="text/css">
+    <!-- <link href="css/theme-dark.css" rel="stylesheet" type="text/css"> -->
+    <link href="js/google-code-prettify/prettify.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="css/jquery.mobile-1.3.1.min.css" />
+
+    <script type="text/javascript" src="js/assets/jquery-1.9.0.min.js"></script>
+    <script src="js/jquery.mobile-1.3.1.min.js"></script>
+
+    <title>SAMNIUS</title>
+</head>
+<body class="metrouicss">
+    <div class="page" id="page-index">         
+        <div class="grid" id="konten">
+            <div class="row">
+                <a href="kategori.html">
+                <div class="span12 bg-color-greenLight padding5">
+                    <h1><i class="icon-newspaper place-right fg-color-white"></i></h1>
+                    <h2 class="fg-color-white">&nbsp;Samnius</h2>
+                    <p class="fg-color-white padding10">Ringkasan & Rekomendasi Berita</p>
+                </div>
+                </a>
+            </div>
+            <!-- <div class="row" id="loading">
+                <div class="span12 center" align="center">
+                    <div id="followingBallsG">
+						<div id="followingBallsG_1" class="followingBallsG">
+						</div>
+						<div id="followingBallsG_2" class="followingBallsG">
+						</div>
+						<div id="followingBallsG_3" class="followingBallsG">
+						</div>
+						<div id="followingBallsG_4" class="followingBallsG">
+						</div>
+					</div>
+                </div>
+            </div> -->
+        </div>        
+    </div>
+</body>
+<script>
+function muatlebih(xx)
+{
+    //$('#loading').show();
+    /*$.mobile.loading( "show", {
+	       text: "loading ...",
+	       textVisible: false,
+	       theme: "a",
+	       textonly: false,
+	       html: ""
+	});*/
+    
+    $('#loadmore').empty();
+    $('#loadmore').append('<div class="span12 center" align="center"><div id="followingBallsG"><div id="followingBallsG_1" class="followingBallsG"></div><div id="followingBallsG_2" class="followingBallsG"></div><div id="followingBallsG_3" class="followingBallsG"></div><div id="followingBallsG_4" class="followingBallsG"></div></div></div>');
+    var $split = location.search.replace('?', '').split('&').map(function(val){return val.split('=');});
+    var $kategori = $split[0][1];
+
+    var klipingAPI = "http://103.247.211.119/samnius/index.php/api/service2/beritaDalamKategori?cat="+$kategori+"&p="+xx+"&callback=?";
+    //alert(klipingAPI);
+    $.getJSON(klipingAPI,function(result){
+    if(result.success == true){
+        var $tag='';
+        
+        $.each(result.data, function(i, field){
+            var $x=field.web * 1;
+            switch($x)
+            {
+                case 1: $x = 'Antara.com';
+                    break;
+                case 2: $x = 'Kompas.com';
+                    break;
+                case 3: $x = 'Merdeka.com';
+                    break;
+                case 4: $x = 'Metrotvnews.com';
+                    break;
+                case 5: $x = 'Okezone.com';
+                    break;
+                case 6: $x = 'Viva.co.id';
+                    break;
+            }
+            $isi = '<div class="row"><a href="detil.html?web='+field.web+'&id='+field.id+'"><div class="span12 bg-color-darken padding10"><h2 class="fg-color-white" style="line-height:25px;">'+field.judul+'</h2><p class="fg-color-white padding5">'+$x+' - '+field.waktu_berita+'</p></div></a></div>';
+            $tag += $isi;            
+        })
+        xx++;
+        $tag += '<div class="row" id="loadmore"><button class="span12 bg-color-blue" onclick="muatlebih('+xx+')"><p class="fg-color-white text-center">tampilkan lebih banyak</p></button></div>';
+        $('#loadmore').remove();
+        $($tag).appendTo('#konten');
+        $.mobile.loading( "hide" );
+    }
+  });
+}
+
+$(document).ready(function(){
+	/*$.mobile.loading( "show", {
+	       text: "loading ...",
+	       textVisible: false,
+	       theme: "a",
+	       textonly: false,
+	       html: ""
+	});*/
+  var $split = location.search.replace('?', '').split('&').map(function(val){return val.split('=');});
+  var $kategori = $split[0][1];
+
+  var klipingAPI = "http://103.247.211.119/samnius/index.php/api/service2/beritaDalamKategori?cat="+$kategori+"&p=1&callback=?";
+  alert(klipingAPI);
+  $.getJSON(klipingAPI,function(result){
+    if(result.success == true){
+        var $tag='';
+        
+        $.each(result.data, function(i, field){
+            var $x=field.web * 1;
+            switch($x)
+            {
+                case 1: $x = 'Antara.com';
+                    break;
+                case 2: $x = 'Kompas.com';
+                    break;
+                case 3: $x = 'Merdeka.com';
+                    break;
+                case 4: $x = 'Metrotvnews.com';
+                    break;
+                case 5: $x = 'Okezone.com';
+                    break;
+                case 6: $x = 'Viva.co.id';
+                    break;
+            }
+            $isi = '<div class="row"><a href="detil.html?web='+field.web+'&id='+field.id+'"><div class="span12 bg-color-darken padding10"><h2 class="fg-color-white" style="line-height:25px;">'+field.judul+'</h2><p class="fg-color-white padding5">'+$x+' <small><i>'+field.waktu_berita+'</i></small></p></div></a></div>';
+            $tag += $isi;            
+        })
+        $tag += '<div class="row" id="loadmore"><button class="span12 bg-color-blue" onclick="muatlebih(2)"><p class="fg-color-white text-center">tampilkan lebih banyak</p></button></div>';
+        $($tag).appendTo('#konten');
+        $.mobile.loading( "hide" );
+    }
+  });
+});
+</script>
+</html>
